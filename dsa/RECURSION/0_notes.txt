@@ -1,0 +1,22 @@
+1. many algorithmic technique based on recursion like
+    - Dynamic Programming
+    - Backtracking
+    - Divide and Conquror(quick sort, merge sort, binary search)
+
+2. have inheriting problems like 
+    - tower of hanoi
+    - dfs based search(inorder, preorder, postorder traversal of tree)   
+
+3. easy to implentation
+4. tail recursion == is trigger/happen when the last is line in func is 
+                     calling func
+
+                     It is very efficint in comaparison to other recursive func
+                     whose next recursion call is in mid not the last one
+
+                     we cannot convert every non tail recursive to tail like merge sort
+note -- chk rope cutting problem 
+     -- chk generate subset 
+     -- chk tower of hanoi 
+     -- chk subset of sum   
+     -- chk string permutation                 

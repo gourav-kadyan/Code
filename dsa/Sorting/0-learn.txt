@@ -1,0 +1,5 @@
+Stable algo --
+        bubble sort, insertion sort, merge sort
+
+unStable sorting algo --
+        selection sort, quick sort, heap sort        

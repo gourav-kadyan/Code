@@ -1,0 +1,53 @@
+graph is a type of data structure which is a combination of nodes and edges.
+
+graph are two types :
+
+   undirected graph : in which edges are not directed to single nodes on a both of nodes like  a-b and   b-a  
+
+   directd graph : in this edges are directd to single nodes on a both of nodes like a -> b 
+
+
+node -- a type of entity in which we store a type of data
+
+edge -- connection ( connecting nodes)
+
+degree -- like nodes a so a ke kitne edge connected hai 
+
+but in directed graph 
+
+    indegree -- kitne edges nodes ke taraf aa rhi hai
+
+    outdegree -- kitne edges nodes se jaa rhi hai
+
+
+
+weighted graph -- isme aise hota hai jb tumhare edges koi value hai usse hm weight bolte hai so uss graph ko hmm ye khte hai 
+
+weighted directd graph -- jiss directed graph ke edges pe weight ho 
+
+
+path -- ek rasta hota hai jisme any nodes ek baar he aati hai like a - b - c is a path but a - b - c -a is   not a path same goes for directed graph bss usme ye dhyan rkhna hai ki edge kis trf directed hai 
+
+
+cyclic graph -- jiss graph mei cycle bnn rhi ho like hmm use aise node pe pahoch gye ho jisse tum already travel krr skte ho 
+
+same goes for cyclic directed graph or cyclic weighted directed graph 
+
+
+acyclic graph -- jiss graph mei tumhe cycle na mille
+
+
+
+    REPRESENTATION of  GRAPH :
+
+    1 - Adjacency matrix -- hmm 2d matix se got it krr li ki ye nodes iss nodes se connected hai ya nhi 0 & 1 
+                            uske index hmare nodes ho jayegi
+
+    2 - Adjacency list -- chk implementation
+
+    
+
+    BFS - breath first search 
+    
+
+

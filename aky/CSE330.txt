@@ -1,0 +1,1902 @@
+Ordered Prime Signature -
+
+vector<int> primes(int n)
+{
+    bool prime[n + 1];
+     
+    // Finding primes by Sieve
+    // of Eratosthenes method
+    memset(prime, true, sizeof(prime));
+     
+    for (int i = 2; i * i <= n; i++)
+    {
+         
+        // If prime[i] is not changed,
+        // then it is prime
+        if (prime[i] == true) {
+             
+            // Update all multiples of p
+            for (int j = i * 2; j <= n; j += i)
+                prime[j] = false;
+        }
+    }
+     
+    vector<int> arr;
+     
+    // Forming array of the prime numbers found
+    for (int i = 2; i <= n; i++)
+    {
+        if (prime[i])
+            arr.push_back(i);
+    }
+    return arr;
+}
+ 
+// Finding ordered prime signature of the number
+vector<int> signature( int n)
+{
+    vector<int> r = primes(n);
+     
+    // Map to store prime factors and
+    // the related exponents
+    map<int, int> factor;
+     
+    // Declaring an iterator for map
+    map<int, int>::iterator it;
+    vector<int> sort_exp;
+    int k, t = n;
+    it = factor.begin();
+     
+    // Finding prime factorization of the number
+    for (int i = 0; i < r.size(); i++)
+    {
+        if (n % r[i] == 0) {
+            k = 0;
+            while (n % r[i] == 0) {
+                n = n / r[i];
+                k++;
+            }
+             
+            // Storing the prime factor and
+            // its exponent in map
+            factor.insert(it, pair<int, int>(r[i], k));
+             
+            // Storing the exponent in a vector
+            sort_exp.push_back(k);
+        }
+    }
+     
+    // Sorting the stored exponents
+    sort(sort_exp.begin(), sort_exp.end());
+     
+    // Printing the prime signature
+    cout << " The Ordered Prime Signature of " <<
+         t << " is : \n{ ";
+          
+    for (int i = 0; i < sort_exp.size(); i++)
+    {
+        if (i != sort_exp.size() - 1)
+            cout << sort_exp[i] << ", ";
+        else
+            cout << sort_exp[i] << " }\n";
+    }
+    return sort_exp;
+}
+ 
+// Finding total number of divisors of the number
+void divisors(int n)
+{
+    int f = 1, l;
+    vector<int> div = signature(n);
+    l = div.size();
+     
+    // Adding one to each element present
+    for (int i = 0; i < l; i++)
+    {
+         
+        // in ordered prime signature
+        div[i] += 1;
+         
+        // Multiplying the elements
+        f *= div[i];
+    }
+    cout << "The total number of divisors of " <<
+          n << " is " << f << "\n";
+}
+ 
+// Driver Method
+int main()
+{
+    int n = 13;
+    divisors(n);
+    return 0;
+}
+
+
+
+
+Find n-th Fortunate Number
+bool isPrime(long long int n)
+    {
+    	// Corner cases
+    	if (n <= 1) return false;
+    	if (n <= 3) return true;
+    
+    	// This is checked so that we can skip
+    	// middle five numbers in below loop
+    	if (n%2 == 0 || n%3 == 0) return false;
+    
+    	for (long long int i=5; i*i<=n; i=i+6)
+    		if (n%i == 0 || n%(i+2) == 0)
+    		return false;
+    
+    	return true;
+    }
+    
+    // Function to Find primorial of order n
+    // (product of first n prime numbers).
+    long long primorial(long long int n)
+    {
+    	long long p = 2;
+    	n--;
+    	for (int i = 3; n != 0; i++)
+    	{
+    		if (isPrime(i))
+    		{
+    			p = p * i;
+    			n--;
+    		}
+    		i++;
+    	}
+    	return p;
+    }
+    
+    long long findNextPrime(long long int n)
+    {
+    	// Note that difference (or m) should be
+    	// greater than 1.
+    	long long nextPrime = n + 2;
+    
+    	// loop continuously until isPrime
+    	// returns true for a number above n
+    	while (true)
+    	{
+    
+    		// Ignoring the prime number that
+    		// is 1 greater than n
+    		if (isPrime(nextPrime))
+    			break;
+    
+    		nextPrime++;
+    	}
+    
+    	return nextPrime;
+    }
+
+    long long nthFortunateNum(int n)
+    {
+        long long p = primorial(n);
+        return findNextPrime(p) - p;
+    }
+
+
+Mansi and her series-
+bool isprime(int i)
+     {
+         for(int j =2; j*j<=i; j++)
+         {
+              if(i%j == 0)
+                   return false ;
+         }
+         return true;
+     }
+       
+   int nthTerm(int n){
+       int i = 0 , ans;
+       for(int check = 2; i < n; check++)
+       {       
+              if(isprime(check))
+               {
+                  ans = check;
+                  i++ ;
+               }
+       }
+       return (ans+1)*n;
+   }
+
+
+
+Mysterious Series -
+
+int maxi = 110000;
+    vector<int> isPrime;
+    void seive(vector<int> &prime){
+        for(int p=2; p<=maxi; p++){
+            if(prime[p]){
+                isPrime.push_back(p);
+                for(int i=p; i<=maxi; i+=p){
+                    prime[i] = false;
+                }
+            }
+        }
+    }
+    long long nthMysterious(long long n){
+        vector<int> prime(maxi, true);
+        seive(prime);
+        return pow(isPrime[n-1], 2)+1;
+    }
+
+
+Primorial of a number -
+
+#include<bits/stdc++.h>
+using namespace std;
+const int MAX = 1000000;
+ 
+// vector to store all prime less than and equal to 10^6
+vector <int> primes;
+ 
+// Function for sieve of sundaram. This function stores all
+// prime numbers less than MAX in primes
+void sieveSundaram()
+{
+    // In general Sieve of Sundaram, produces primes smaller
+    // than (2*x + 2) for a number given number x. Since
+    // we want primes smaller than MAX, we reduce MAX to half
+    // This array is used to separate numbers of the form
+    // i+j+2ij from others where 1 <= i <= j
+    bool marked[MAX/2 + 1] = {0};
+ 
+    // Main logic of Sundaram. Mark all numbers which
+    // do not generate prime number by doing 2*i+1
+    for (int i = 1; i <= (sqrt(MAX)-1)/2 ; i++)
+        for (int j = (i*(i+1))<<1 ; j <= MAX/2 ; j += 2*i +1)
+            marked[j] = true;
+ 
+    // Since 2 is a prime number
+    primes.push_back(2);
+ 
+    // Print other primes. Remaining primes are of the
+    // form 2*i + 1 such that marked[i] is false.
+    for (int i=1; i<=MAX/2; i++)
+        if (marked[i] == false)
+            primes.push_back(2*i + 1);
+}
+ 
+// Function to calculate primorial of n
+int calculatePrimorial(int n)
+{
+    // Multiply first n primes
+    int result = 1; 
+    for (int i=0; i<n; i++)
+       result = result * primes[i];
+    return result;
+}
+ 
+// Driver code
+int main()
+{
+    int n = 5;
+    sieveSundaram();
+    for (int i = 1 ; i<= n; i++)
+        cout << "Primorial(P#) of " << i << " is "
+            << calculatePrimorial(i) <<endl;
+    return 0;
+}
+
+
+
+Chandler and Joey -
+#include<stdio.h>
+ #include<iostream>
+ #include<algorithm>
+ using namespace std;
+ int a[101];
+ int GCD(int a, int b)
+ {
+  if (b==0) return a;
+  return GCD(b,a%b);
+ }
+ int main()
+ { 
+ int t,n,i,c,p,max;
+ unsigned long long int sum1,sum2,n1;
+ scanf("%d",&t);
+  while(t--)
+  {  
+    sum1=0;
+    sum2=0;
+    p=0;
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    scanf("%d",&a[i]);
+    max=*max_element(a,a+n);
+    for(i=0;i<n;i++)
+    sum2+=a[i];
+    for(i=0;i<n;i++)
+    p=GCD(a[i],p);
+    c=(max/p)-n;                // c is total number of moves taken by both players 
+    n1=c+n;
+    sum1=(n1*(2*p+(n1-1)*p))/2; // sum of AP series whose common difference is GCD of n numbers
+
+    if((c&1)==0)                // if total number of moves are even Chandler wins
+    {
+        printf("Chandler %llu\n",sum1-sum2);
+    }
+    else                        // if total number of moves are odd Joey wins
+    {
+        printf("Joey %llu\n",sum1-sum2);
+     }
+
+  }
+     return 0;
+}
+
+
+Express N as sum of 4 prime numbers -
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// function to check if a number is prime or not
+int isPrime(int x)
+{
+    // does square root of the number
+    int s = sqrt(x);
+ 
+    // traverse from 2 to sqrt(n)
+    for (int i = 2; i <= s; i++)
+ 
+        // if any divisor found then non prime
+        if (x % i == 0)
+            return 0;
+ 
+    // if no divisor is found then it is a prime
+    return 1;
+}
+ 
+void Num(int x, int& a, int& b)
+{
+    // iterates to check prime or not
+    for (int i = 2; i <= x / 2; i++) {
+ 
+        // calls function to check if i and x-i
+        // is prime or not
+        if (isPrime(i) && isPrime(x - i)) {
+ 
+            a = i;
+            b = x - i;
+ 
+            // if two prime numbers are found,
+            // then return
+            return;
+        }
+    }
+}
+ 
+// function to generate 4 prime numbers adding upto n
+void generate(int n)
+{
+    // if n<=7 then 4 numbers cannot sum to
+    // get that number
+    if (n <= 7)
+        cout << "Impossible to form" << endl;
+ 
+    // a and b stores the last two numbers
+    int a, b;
+ 
+    // if it is not even then 2 and 3 are first
+    // two of sequence
+    if (n % 2 != 0) {
+ 
+        // calls the function to get the other
+        // two prime numbers considering first two
+        // primes as 2 and 3 (Note 2 + 3 = 5)
+        Num(n - 5, a, b);
+ 
+        // print 2 and 3 as the firsts two prime
+        // and a and b as the last two.
+        cout << "2 3 " << a << " " << b << endl;
+    }
+ 
+    // if it is even then 2 and 2 are first two
+    // of sequence
+    else {
+ 
+        /// calls the function to get the other
+        // two prime numbers considering first two
+        // primes as 2 and 2 (Note 2 + 2 = 4)
+        Num(n - 4, a, b);
+ 
+        // print 2 and 2 as the firsts two prime
+        // and a and b as the last two.
+        cout << "2 2 " << a << " " << b << endl;
+    }
+}
+ 
+// driver program to test the above function
+int main()
+{
+    int n = 28;
+    generate(n);
+    return 0;
+}
+
+
+
+
+Prime number of set bits-
+#include <bits/stdc++.h>
+using namespace std;
+ 
+bool isPrime(int n)
+{
+    // Corner cases
+    if (n <= 1)  return false;
+    if (n <= 3)  return true;
+  
+    // This is checked so that we can skip
+    // middle five numbers in below loop
+    if (n%2 == 0 || n%3 == 0) return false;
+  
+    for (int i=5; i*i<=n; i=i+6)
+        if (n%i == 0 || n%(i+2) == 0)
+           return false;
+  
+    return true;
+}
+ 
+// count number, that contains prime number of set bit
+int primeBitsInRange(int l, int r)
+{
+    // tot_bit store number of bit in number
+    int tot_bit, count = 0;
+ 
+    // iterate loop from l to r
+    for (int i = l; i <= r; i++) {
+ 
+        // use predefined function for finding
+        // set bit it is return number of set bit
+        tot_bit = __builtin_popcount(i);
+ 
+        // check tot_bit prime or, not
+        if (isPrime(tot_bit))
+            count++;
+    }
+    return count;
+}
+ 
+// Driven Program
+int main()
+{
+    int l = 6, r = 10;   
+    cout << primeBitsInRange(l, r);
+    return 0;
+}
+
+
+
+Sum of K Primes -
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Checking if a number is prime or not
+bool isprime(int x)
+{
+   
+    // check for numbers from 2 to sqrt(x)
+    // if it is divisible return false
+    for (int i = 2; i * i <= x; i++)
+        if (x % i == 0)
+            return false;
+    return true;
+}
+ 
+// Returns true if N can be written as sum
+// of K primes
+bool isSumOfKprimes(int N, int K)
+{
+    // N < 2K directly return false
+    if (N < 2*K)
+        return false;
+ 
+    // If K = 1 return value depends on primality of N
+    if (K == 1)
+        return isprime(N);
+ 
+    if (K == 2)
+    {
+        // if N is even directly return true;
+        if (N % 2 == 0)
+            return true;
+ 
+        // If N is odd, then one prime must
+        // be 2. All other primes are odd
+        // and cannot have a pair sum as even.
+        return isprime(N - 2);
+    }
+ 
+    // If K >= 3 return true;
+    return true;
+}
+ 
+// Driver function
+int main()
+{
+    int n = 10, k = 2;
+    if (isSumOfKprimes (n, k))
+        cout << "Yes" << endl;
+    else
+        cout << "No" << endl;
+    return 0;
+}
+
+
+
+Find the closest prime number to a given number-
+#include <limits.h>
+#include <stdio.h>
+
+int isPrime(int n) {
+    if (n <= 2 || n % 2 == 0)
+        return n == 2;
+    for (int i = 3; i <= n / i; i += 2) {
+        if (n % i == 0)
+            return 0;
+    }
+    return 1;
+}
+
+int main() {
+    int n;
+
+    if (scanf("%d", &n) != 1)
+        return 1;
+
+    if (n <= 2) {
+        printf("2\n");
+    } else {
+        for (i = 0;; i++) {
+            if (isPrime(n - i))
+                printf("%d\n", n - i);
+                break;
+            }
+            if (n <= INT_MAX - i && isPrime(n + i))
+                printf("%d\n", n + i);
+                break;
+            }
+        }
+    }
+    return 0;
+}
+
+
+
+Primes sum -
+#include <bits/stdc++.h>
+using namespace std;
+  
+// Generate all prime numbers less than n.
+bool SieveOfEratosthenes(int n, bool isPrime[])
+{
+    // Initialize all entries of boolean array as true. A
+    // value in isPrime[i] will finally be false if i is Not
+    // a prime, else true bool isPrime[n+1];
+    isPrime[0] = isPrime[1] = false;
+    for (int i = 2; i <= n; i++)
+        isPrime[i] = true;
+  
+    for (int p = 2; p * p <= n; p++) {
+        // If isPrime[p] is not changed, then it is a prime
+        if (isPrime[p] == true) {
+            // Update all multiples of p
+            for (int i = p * p; i <= n; i += p)
+                isPrime[i] = false;
+        }
+    }
+}
+  
+// Prints a prime pair with given sum
+void findPrimePair(int n)
+{
+    // Generating primes using Sieve
+    bool isPrime[n + 1];
+    SieveOfEratosthenes(n, isPrime);
+  
+    // Traversing all numbers to find first pair
+    for (int i = 0; i < n; i++) {
+        if (isPrime[i] && isPrime[n - i]) {
+            cout << i << " " << (n - i);
+            return;
+        }
+    }
+}
+  
+// Driven program
+int main()
+{
+    int n = 74;
+    findPrimePair(n);
+    return 0;
+}
+
+
+
+
+Kth Prime factor of a Number -
+# include<bits/stdc++.h>
+using namespace std;
+ 
+// A function to generate prime factors of a
+// given number n and return k-th prime factor
+int kPrimeFactor(int n, int k)
+{
+    // Find the number of 2's that divide k
+    while (n%2 == 0)
+    {
+        k--;
+        n = n/2;
+        if (k == 0)
+         return 2;
+    }
+ 
+    // n must be odd at this point.  So we can skip
+    // one element (Note i = i +2)
+    for (int i = 3; i <= sqrt(n); i = i+2)
+    {
+        // While i divides n, store i and divide n
+        while (n%i == 0)
+        {
+            if (k == 1)
+              return i;
+ 
+            k--;
+            n = n/i;
+        }
+    }
+ 
+    // This condition is to handle the case where
+    // n is a prime number greater than 2
+    if (n > 2 && k == 1)
+        return n;
+ 
+    return -1;
+}
+ 
+// Driver Program
+int main()
+{
+    int n = 12, k = 3;
+    cout << kPrimeFactor(n, k) << endl;
+    n = 14, k = 3;
+    cout << kPrimeFactor(n, k) << endl;
+    return 0;
+}
+
+
+
+Find the highest occurring digit in prime numbers in a range -
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Sieve of Eratosthenes
+void sieve(bool prime[], int n)
+{
+      prime[0] = prime[1] = true;
+    for (int p = 2; p * p  <= n; p++)
+    {
+        if (prime[p] == false)
+            for (int i = p*2; i <= n; i+=p)
+                prime[i] = true;
+    }
+}
+ 
+// Returns maximum occurring digits in primes
+// from l to r.
+int maxDigitInPrimes(int L, int R)
+{
+    bool prime[R+1];
+    memset(prime, 0, sizeof(prime));
+ 
+    // Finding the prime number up to R.
+    sieve(prime, R);
+ 
+    // Initialise frequency of all digit to 0.
+    int freq[10] = { 0 };
+    int val;
+ 
+    // For all number between L to R, check if prime
+    // or not. If prime, incrementing the frequency
+    // of digits present in the prime number.
+    for (int i = L; i <= R; i++)
+    {
+        if (!prime[i])
+        {
+            int p = i; // If i is prime
+            while (p)
+            {
+                freq[p%10]++;
+                p /= 10;
+            }
+        }
+    }
+ 
+    // Finding digit with highest frequency.
+    int max = freq[0], ans = 0;
+    for (int j = 1; j < 10; j++)
+    {
+        if (max <= freq[j])
+        {
+            max = freq[j];
+            ans = j;
+        }
+    }
+ 
+    return (max != 0)? ans: -1;
+}
+ 
+// Driven Program
+int main()
+{
+    int L = 1, R = 20;
+ 
+    cout << maxDigitInPrimes(L, R) << endl;
+    return 0;
+}
+
+
+Sum of all proper divisors of a natural number -
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Function to calculate sum of all proper divisors
+// num --> given natural number
+int divSum(int num)
+{
+    // Final result of summation of divisors
+    int result = 0;
+    if(num == 1) // there will be no proper divisor
+      return result;
+    // find all divisors which divides 'num'
+    for (int i=2; i<=sqrt(num); i++)
+    {
+        // if 'i' is divisor of 'num'
+        if (num%i==0)
+        {
+            // if both divisors are same then add
+            // it only once else add both
+            if (i==(num/i))
+                result += i;
+            else
+                result += (i + num/i);
+        }
+    }
+ 
+    // Add 1 to the result as 1 is also a divisor
+    return (result + 1);
+}
+ 
+// Driver program to run the case
+int main()
+{
+    int num = 36;
+    cout << divSum(num);
+    return 0;
+}
+
+
+
+
+Circular Prime Number -
+#include <iostream>
+#include <cmath>
+using namespace std;
+ 
+// Function to check if a number is prime or not.
+bool isPrime(int n)
+{
+    // Corner cases
+    if (n <= 1)
+        return false;
+    if (n <= 3)
+        return true;
+ 
+    // This is checked so that we can skip
+    // middle five numbers in below loop
+    if (n % 2 == 0 || n % 3 == 0)
+        return false;
+ 
+    for (int i = 5; i * i <= n; i = i + 6)
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+ 
+    return true;
+}
+ 
+// Function to check if the number is circular
+// prime or not.
+bool checkCircular(int N)
+{
+    // Count digits.
+    int count = 0, temp = N;
+    while (temp) {
+        count++;
+        temp /= 10;
+    }
+ 
+    int num = N;
+    while (isPrime(num)) {
+ 
+        // Following three lines generate the next
+        // circular permutation of a number. We move
+        // last digit to first position.
+        int rem = num % 10;
+        int div = num / 10;
+        num = (pow(10, count - 1)) * rem + div;
+ 
+        // If all the permutations are checked and
+        // we obtain original number exit from loop.
+        if (num == N)
+            return true;
+    }
+ 
+    return false;
+}
+ 
+// Driver Program
+int main()
+{
+    int N = 1193;
+    if (checkCircular(N))
+        cout << "Yes" << endl;
+    else
+        cout << "No" << endl;
+    return 0;
+}
+
+
+
+Sphenic Number-
+#include<bits/stdc++.h>
+using namespace std;
+//create a global array of size 10001;
+bool arr[1001];
+// This functions finds all primes smaller than 'limit'
+// using simple sieve of eratosthenes.
+void simpleSieve()
+{
+    // initialize all entries of it as true. A value
+    // in mark[p] will finally be false if 'p' is Not
+    // a prime, else true.
+    memset(arr,true,sizeof(arr));
+ 
+    // One by one traverse all numbers so that their
+    // multiples can be marked as composite.
+    for(int p=2;p*p<1001;p++)
+    { 
+        // If p is not changed, then it is a prime
+        if(arr[p])
+        {// Update all multiples of p
+            for(int i=p*2;i<1001;i=i+p)
+            arr[i]=false;
+        }
+    }
+}
+int find_sphene(int N)
+{
+    int arr1[8]={0};   //to store the 8 divisors
+    int count=0;        //to count the number of divisor
+    int j=0;
+    for(int i=1;i<=N;i++)    
+    {
+        if(N%i==0 &&count<9)       
+        {
+            count++;
+            arr1[j++]=i;
+        }
+    }
+    //finally check if there re 8 divisor and all the numbers are distinct prime no return 1
+    //else return 0
+    if(count==8 && (arr[arr1[1]] && arr[arr1[2]] && arr[arr1[3]]))
+    return 1;
+    return 0;
+}
+ 
+// Driver program to test above function
+int main()
+{
+    int n = 60;
+    simpleSieve();
+    int ans=find_sphene(n);
+    if(ans)
+    cout<<"Yes";
+    else
+    cout<<"NO";
+}
+
+
+
+Least Prime Factor-
+#include<bits/stdc++.h>
+using namespace std;
+ 
+void leastPrimeFactor(int n)
+{
+    // Create a vector to store least primes.
+    // Initialize all entries as 0.
+    vector<int> least_prime(n+1, 0);
+ 
+    // We need to print 1 for 1.
+    least_prime[1] = 1;
+ 
+    for (int i = 2; i <= n; i++)
+    {
+        // least_prime[i] == 0
+        // means it i is prime
+        if (least_prime[i] == 0)
+        {
+            // marking the prime number
+            // as its own lpf
+            least_prime[i] = i;
+ 
+            // mark it as a divisor for all its
+            // multiples if not already marked
+            for (int j = i*i; j <= n; j += i)
+                if (least_prime[j] == 0)
+                   least_prime[j] = i;
+        }
+    }
+ 
+    // print least prime factor of
+    // of numbers till n
+    for (int i = 1; i <= n; i++)
+        cout << "Least Prime factor of "
+             << i << ": " << least_prime[i] << "\n";
+}
+ 
+// Driver program to test above function
+int main()
+{
+    int n = 10;
+    leastPrimeFactor(n);
+    return 0;
+}
+
+
+
+
+Next Prime Palindrome -
+#include <iostream>
+#include <string>
+using namespace std;
+ 
+bool isPrime(int num)
+{
+    if (num < 2 || num % 2 == 0)
+        return num == 2;
+    for (int i = 3; i * i <= num; i += 2)
+        if (num % i == 0)
+            return false;
+    return true;
+}
+ 
+int primePalindrome(int N)
+{
+    // if(8<=N<=11) return 11
+    if (8 <= N && N <= 11)
+        return 11;
+ 
+    // generate odd length palindrome number
+    // which will cover given constraint.
+    for (int x = 1; x < 100000; ++x) {
+     
+        string s = to_string(x), r(s.rbegin(), s.rend());
+        int y = stoi(s + r.substr(1));
+     
+        // if y>=N and it is a prime number
+        // then return it.
+        if (y >= N && isPrime(y))
+            return y;
+    }
+ 
+    return -1;
+}
+ 
+// Driver code
+int main()
+{
+    cout << primePalindrome(112);
+    return 0;
+}
+
+
+
+RECURSION-
+
+Next Happy Number-
+class Solution{
+public:
+    bool isHappy(int n, unordered_map<int, int>& mp) {
+        if(n==1) return true;
+        if(mp[n]) return false;
+        mp[n]++;
+        int new_n = 0;
+        while(n>0){
+            new_n += pow(n%10, 2);
+            n/=10;
+        }
+        if(isHappy(new_n, mp)) return true;
+        return false;
+    }
+    int nextHappy(int n){
+        unordered_map<int, int> mp;
+        if(isHappy(n+1, mp)) return n+1;
+        return nextHappy(n+1);
+    }
+};
+
+
+Fact Digit Sum -
+vector<int> FactDigit(int N)
+    {
+        // Code here
+        vector<int>ans;
+        vector<int>fact(10,0);
+        fact[0]=1;
+        for(int i=1;i<10;i++){
+            fact[i]=i*fact[i-1];
+        }
+        for(int i=9;i>=1;i--){
+            while(N>=fact[i]){
+                ans.push_back(i);
+                N-=fact[i];
+            }
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+
+
+
+Print N-bit binary numbers having more 1’s than 0’s in all prefixes -
+#include <bits/stdc++.h>
+using namespace std;
+ 
+/* function to generate n  digit numbers*/
+void printRec(string number, int extraOnes,
+              int remainingPlaces)
+{
+    /* if number generated */
+    if (0 == remainingPlaces) {
+        cout << number << " ";
+        return;
+    }
+ 
+    /* Append 1 at the current number and reduce
+       the remaining places by one */
+    printRec(number + "1", extraOnes + 1,
+             remainingPlaces - 1);
+ 
+    /* If more ones than zeros, append 0 to the
+       current number and reduce the remaining
+       places by one*/
+    if (0 < extraOnes)
+        printRec(number + "0", extraOnes - 1,
+                 remainingPlaces - 1);
+}
+ 
+void printNums(int n)
+{
+    string str = "";
+    printRec(str, 0, n);
+}
+ 
+// Driver code
+int main()
+{
+    int n = 4;
+   
+    // Function call
+    printNums(n);
+    return 0;
+}
+
+
+
+Sum-string -
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// this is function for finding sum of two
+// numbers as string
+string string_sum(string str1, string str2)
+{
+    if (str1.size() < str2.size())
+        swap(str1, str2);
+ 
+    int m = str1.size();
+    int n = str2.size();
+    string ans = "";
+ 
+    // sum the str2 with str1
+    int carry = 0;
+    for (int i = 0; i < n; i++) {
+ 
+        // Sum of current digits
+        int ds = ((str1[m - 1 - i] - '0')
+                  + (str2[n - 1 - i] - '0') + carry)
+                 % 10;
+ 
+        carry = ((str1[m - 1 - i] - '0')
+                 + (str2[n - 1 - i] - '0') + carry)
+                / 10;
+ 
+        ans = char(ds + '0') + ans;
+    }
+ 
+    for (int i = n; i < m; i++) {
+        int ds = (str1[m - 1 - i] - '0' + carry) % 10;
+        carry = (str1[m - 1 - i] - '0' + carry) / 10;
+        ans = char(ds + '0') + ans;
+    }
+ 
+    if (carry)
+        ans = char(carry + '0') + ans;
+    return ans;
+}
+ 
+// Returns true if two substrings of given
+// lengths of str[beg..] can cause a positive
+// result.
+bool checkSumStrUtil(string str, int beg, int len1,
+                     int len2)
+{
+ 
+    // Finding two substrings of given lengths
+    // and their sum
+    string s1 = str.substr(beg, len1);
+    string s2 = str.substr(beg + len1, len2);
+    string s3 = string_sum(s1, s2);
+ 
+    int s3_len = s3.size();
+ 
+    // if number of digits s3 is greater than
+    // the available string size
+    if (s3_len > str.size() - len1 - len2 - beg)
+        return false;
+ 
+    // we got s3 as next number in main string
+    if (s3 == str.substr(beg + len1 + len2, s3_len)) {
+ 
+        // if we reach at the end of the string
+        if (beg + len1 + len2 + s3_len == str.size())
+            return true;
+ 
+        // otherwise call recursively for n2, s3
+        return checkSumStrUtil(str, beg + len1, len2,
+                               s3_len);
+    }
+ 
+    // we do not get s3 in main string
+    return false;
+}
+ 
+// Returns true if str is sum string, else false.
+bool isSumStr(string str)
+{
+    int n = str.size();
+ 
+    // choosing first two numbers and checking
+    // whether it is sum-string or not.
+    for (int i = 1; i < n; i++)
+        for (int j = 1; i + j < n; j++)
+            if (checkSumStrUtil(str, 0, i, j))
+                return true;
+ 
+    return false;
+}
+ 
+// Driver code
+int main()
+{
+    bool result;
+ 
+    result = isSumStr("1212243660");
+    cout << (result == 1 ? "True\n" : "False\n");
+       
+    result = isSumStr("123456787");
+    cout << (result == 1 ? "True\n" : "False\n");
+    return 0;
+}
+
+
+
+Sisters and coins - 
+int isPossible(int a[], int n, int sum)
+    {
+        if(sum==0) return 1;
+        if(n<0) return 0;
+        if(a[n]<=sum) return isPossible(a, n-1, sum-a[n]) || isPossible(a, n-1, sum);
+        else return isPossible(a, n-1, sum);
+        return 0;
+    }
+    int sisterCoin(int a[], int n, int m){
+        int sum = 0;
+        for(int i=0; i<n; i++){
+            sum+=a[i];
+        }
+        sum = sum-m;
+        if(sum<0 || sum%2==1) return 0;
+        if(isPossible(a, n-1, sum/2)) return 1;
+        return 0;
+    }
+
+
+
+N Digit numbers with digits in increasing order -
+void solve(int start, string s, int n, vector<int>& ans)
+    {
+        if(n==0){
+            if(s[0] != '0') ans.push_back(stoi(s));
+        }
+        for(int i=start; i<=9; i++){
+            solve(i+1, s+to_string(i), n-1, ans);
+        }
+    }
+    vector<int> increasingNumbers(int n)
+    {
+        vector<int> ans;
+        if(n==1){
+            for(int i=0; i<=9; i++){
+                ans.push_back(i);
+            }
+            return ans;
+        }
+        solve(0, "", n, ans);
+        return ans;
+    }
+
+
+Minimum steps to destination -
+int minSteps(int D){
+        D = abs(D);
+        int step = 0, sum = 0;
+        while(sum < D || (sum-D)%2!=0){
+            step++;
+            sum+=step;
+        }
+        return step;
+    }
+
+
+
+Water Overflow -
+double champagneTower(int X, int r, int c) {
+        //r++; c++; --> for 0-based indexing
+        double glass[(r*(r+1))/2];
+        int n = (r*(r+1))/2;
+        memset(glass, 0, sizeof(glass));
+        int ind = 0;
+        double water = X;
+        glass[ind] = water;
+        for(int row=1; row<=r; row++){
+            for(int col=1; col<=row; col++){
+                water = glass[ind];
+                glass[ind] = (water>=1.0)?1.0:water;
+                water = (water>=1.0)?(water-1.0):0.0;
+                if(ind+row>=n) break;
+                glass[ind+row] += double(water)/2;
+                glass[ind+row+1] += double(water)/2;
+                ind++;
+            }
+        }
+        return glass[((r*(r-1))/2)+c-1];
+    }
+
+
+
+Express as sum of power of natural numbers -
+#include<bits/stdc++.h> 
+using namespace std;
+ 
+int res = 0;
+int checkRecursive(int num, int x, int k, int n)
+{
+    if (x == 0)
+        res++;
+     
+    int r = (int)floor(pow(num, 1.0 / n));
+ 
+    for (int i = k + 1; i <= r; i++)
+    {
+        int a = x - (int)pow(i, n);
+        if (a >= 0)
+            checkRecursive(num, x -
+                          (int)pow(i, n), i, n);
+    }
+    return res;
+}
+ 
+// Wrapper over checkRecursive()
+int check(int x, int n)
+{
+    return checkRecursive(x, x, 0, n);
+}
+ 
+// Driver Code
+int main()
+{
+    cout << (check(10, 2));
+    return 0;
+}
+
+
+
+
+Decode the string -
+#include <iostream>
+#include <stack>
+using namespace std;
+ 
+string decodeString(string s)
+{
+    stack<char> st;
+    for (int i = 0; i < s.length(); i++) {
+        // When ']' is encountered, we need to start
+        // decoding
+        if (s[i] == ']') {
+            string temp;
+            while (!st.empty() && st.top() != '[') {
+                // st.top() + temp makes sure that the
+                // string won't be in reverse order eg, if
+                // the stack contains 12[abc temp = c + "" =>
+                // temp = b + "c" => temp = a + "bc"
+                temp = st.top() + temp;
+                st.pop();
+            }
+            // remove the '[' from the stack
+            st.pop();
+            string num;
+            // remove the digits from the stack
+            while (!st.empty() && isdigit(st.top())) {
+                num = st.top() + num;
+                st.pop();
+            }
+            int number = stoi(num);
+            string repeat;
+            for (int j = 0; j < number; j++)
+                repeat += temp;
+            for (char c : repeat)
+                st.push(c);
+        }
+        // if s[i] is not ']', simply push s[i] to the stack
+        else
+            st.push(s[i]);
+    }
+    string res;
+    while (!st.empty()) {
+        res = st.top() + res;
+        st.pop();
+    }
+    return res;
+}
+// driver code
+int main()
+{
+    string str = "3[b2[ca]]";
+    cout << decodeString(str);
+    return 0;
+}
+
+
+
+
+Replace O's with X's
+#include<iostream>
+using namespace std;
+ 
+// Size of given matrix is M X N
+#define M 6
+#define N 6
+ 
+ 
+// A recursive function to replace previous value 'prevV' at  '(x, y)'
+// and all surrounding values of (x, y) with new value 'newV'.
+void floodFillUtil(char mat[][N], int x, int y, char prevV, char newV)
+{
+    // Base cases
+    if (x < 0 || x >= M || y < 0 || y >= N)
+        return;
+    if (mat[x][y] != prevV)
+        return;
+ 
+    // Replace the color at (x, y)
+    mat[x][y] = newV;
+ 
+    // Recur for north, east, south and west
+    floodFillUtil(mat, x+1, y, prevV, newV);
+    floodFillUtil(mat, x-1, y, prevV, newV);
+    floodFillUtil(mat, x, y+1, prevV, newV);
+    floodFillUtil(mat, x, y-1, prevV, newV);
+}
+ 
+// Returns size of maximum size subsquare matrix
+// surrounded by 'X'
+int replaceSurrounded(char mat[][N])
+{
+   // Step 1: Replace all 'O'  with '-'
+   for (int i=0; i<M; i++)
+      for (int j=0; j<N; j++)
+          if (mat[i][j] == 'O')
+             mat[i][j] = '-';
+ 
+   // Call floodFill for all '-' lying on edges
+   for (int i=0; i<M; i++)   // Left side
+      if (mat[i][0] == '-')
+        floodFillUtil(mat, i, 0, '-', 'O');
+   for (int i=0; i<M; i++)  //  Right side
+      if (mat[i][N-1] == '-')
+        floodFillUtil(mat, i, N-1, '-', 'O');
+   for (int i=0; i<N; i++)   // Top side
+      if (mat[0][i] == '-')
+        floodFillUtil(mat, 0, i, '-', 'O');
+   for (int i=0; i<N; i++)  // Bottom side
+      if (mat[M-1][i] == '-')
+        floodFillUtil(mat, M-1, i, '-', 'O');
+ 
+   // Step 3: Replace all '-' with 'X'
+   for (int i=0; i<M; i++)
+      for (int j=0; j<N; j++)
+         if (mat[i][j] == '-')
+             mat[i][j] = 'X';
+ 
+}
+ 
+// Driver program to test above function
+int main()
+{
+    char mat[][N] =  {{'X', 'O', 'X', 'O', 'X', 'X'},
+                     {'X', 'O', 'X', 'X', 'O', 'X'},
+                     {'X', 'X', 'X', 'O', 'X', 'X'},
+                     {'O', 'X', 'X', 'X', 'X', 'X'},
+                     {'X', 'X', 'X', 'O', 'X', 'O'},
+                     {'O', 'O', 'X', 'O', 'O', 'O'},
+                    };
+    replaceSurrounded(mat);
+ 
+ 
+    for (int i=0; i<M; i++)
+    {
+      for (int j=0; j<N; j++)
+          cout << mat[i][j] << " ";
+      cout << endl;
+    }
+    return 0;
+}
+
+
+
+
+Last non-zero digit in factorial -
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Initialize values of last non-zero digit of
+// numbers from 0 to 9
+int dig[] = {1, 1, 2, 6, 4, 2, 2, 4, 2, 8};
+ 
+int lastNon0Digit(int n)
+{
+     if (n < 10)
+        return dig[n];
+ 
+    // Check whether tens (or second last) digit
+    // is odd or even
+    // If n = 375, So n/10 = 37 and (n/10)%10 = 7
+    // Applying formula for even and odd cases.
+    if (((n/10)%10)%2 == 0)
+        return (6*lastNon0Digit(n/5)*dig[n%10]) % 10;
+    else
+        return (4*lastNon0Digit(n/5)*dig[n%10]) % 10;
+}
+ 
+// Driver code
+int main()
+{
+    int n = 14;
+    cout << lastNon0Digit(n);
+    return 0;
+}
+
+
+
+Recursively remove all adjacent duplicates -
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Recursively removes adjacent duplicates from str and
+// returns new string. last_removed is a pointer to
+// last_removed character
+char* removeUtil(char* str, char* last_removed)
+{
+ 
+    // If length of string is 1 or 0
+    if (str[0] == '\0' || str[1] == '\0')
+        return str;
+ 
+    // Remove leftmost same characters and recur for
+    // remaining string
+    if (str[0] == str[1]) {
+        *last_removed = str[0];
+        while (str[1] && str[0] == str[1])
+            str++;
+        str++;
+        return removeUtil(str, last_removed);
+    }
+ 
+    // At this point, the first character is definitely
+    // different from its adjacent. Ignore first character
+    // and recursively remove characters from remaining
+    // string
+    char* rem_str = removeUtil(str + 1, last_removed);
+ 
+    // Check if the first character of the rem_string
+    // matches with the first character of the original
+    // string
+    if (rem_str[0] && rem_str[0] == str[0]) {
+        *last_removed = str[0];
+ 
+        // Remove first character
+        return (rem_str + 1);
+    }
+ 
+    // If remaining string becomes empty and last removed
+    // character is same as first character of original
+    // string. This is needed for a string like "acbbcddc"
+    if (rem_str[0] == '\0' && *last_removed == str[0])
+        return rem_str;
+ 
+    // If the two first characters of str and rem_str don't
+    // match, append first character of str before the first
+    // character of rem_str.
+    rem_str--;
+    rem_str[0] = str[0];
+    return rem_str;
+}
+ 
+// Function to remove
+char* remove(char* str)
+{
+    char last_removed = '\0';
+    return removeUtil(str, &last_removed);
+}
+ 
+// Driver program to test above functions
+int main()
+{
+    char str1[] = "geeksforgeeg";
+    cout << remove(str1) << endl;
+ 
+    char str2[] = "azxxxzy";
+    cout << remove(str2) << endl;
+ 
+    char str3[] = "caaabbbaac";
+    cout << remove(str3) << endl;
+ 
+    char str4[] = "gghhg";
+    cout << remove(str4) << endl;
+ 
+    char str5[] = "aaaacddddcappp";
+    cout << remove(str5) << endl;
+ 
+    char str6[] = "aaaaaaaaaa";
+    cout << remove(str6) << endl;
+ 
+    char str7[] = "qpaaaaadaaaaadprq";
+    cout << remove(str7) << endl;
+ 
+    char str8[] = "acaaabbbacdddd";
+    cout << remove(str8) << endl;
+ 
+    char str9[] = "acbbcddc";
+    cout << remove(str9) << endl;
+ 
+    return 0;
+}
+
+
+
+
+Finding Profession -
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Returns 'e' if profession of node at given level
+// and position is engineer. Else doctor. The function
+// assumes that given position and level have valid values.
+char findProffesion(int level, int pos)
+{
+    // Base case
+    if (level == 1)
+        return 'e';
+ 
+    // Recursively find parent's profession. If parent
+    // is a Doctor, this node will be a Doctor if it is
+    // at odd position and an engineer if at even position
+    if (findProffesion(level-1, (pos+1)/2) == 'd')
+        return (pos%2)? 'd' : 'e';
+ 
+    // If parent is an engineer, then current node will be
+    // an engineer if at add position and doctor if even
+    // position.
+    return (pos%2)?  'e' : 'd';
+}
+ 
+// Driver code
+int main(void)
+{
+    int level = 4, pos = 2;
+    (findProffesion(level, pos) == 'e')? cout << "Engineer"
+                                       : cout << "Doctor" ;
+    return 0;
+}
+
+
+
+Count number of disjoint subsets -
+#include <bits/stdc++.h>
+using namespace std;
+#define p 1000000007
+ 
+// Modulo exponentiation function
+long long power(long long x, long long y)
+{
+    // Function to calculate (x^y)%p in O(log(y))
+    long long res = 1;
+    x = x % p;
+ 
+    while (y > 0) {
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
+    }
+ 
+    return res % p;
+}
+ 
+// Driver function
+int main()
+{
+    long long n = 3;
+ 
+    // Evaluating ((3^n-2^(n+1)+1)/2)%p
+    long long x = (power(3, n) % p + 1) % p;
+ 
+    x = (x - power(2, n + 1) + p) % p;
+ 
+    // From Fermats’s little theorem
+    // a^-1 ? a^(m-2) (mod m)
+ 
+    x = (x * power(2, p - 2)) % p;
+    cout << x << "\n";
+}
+
+
+Special Keyboard -
+long long int optimalKeys(int N){
+        // code here
+        
+        vector<long long> dp(N + 1, 0);
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        for(int i = 3; i <= N; i++){
+            dp[i] = i;
+            for(int j = i - 3; j >= 1; j--){
+                dp[i] = max(dp[i], dp[j] + dp[j]*(i - (j + 2)));
+            }
+        }
+        return dp[N];
+    }
+
+
+
+Handshakes -
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Function to find all possible handshakes
+int handshake(int n)
+{
+ 
+    // When n becomes 0 that means all the persons have done
+    // handshake with other
+    if (n == 0)
+        return 0;
+    else
+        return (n - 1) + handshake(n - 1);
+}
+ 
+// Driver code
+int main()
+{
+    int n = 9;
+    cout << " " << handshake(n);
+    return 0;
+}
+
+
+Finding Position -
+long long int solve(long long int n)
+    {
+        if(n==1) return 0;
+        
+        return 1+solve(n/2);
+    }
+    long long int nthPosition(long long int n){
+        // code here
+        if(n ==1) return 1;
+        
+        long long int ans = pow(2,solve(n));
+        return ans;
+    }
+
+
+
+Combination Sum -
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Print all members of ar[] that have given
+void findNumbers(vector<int>& ar, int sum,
+                 vector<vector<int> >& res, vector<int>& r,
+                 int i)
+{
+    // if we get exact answer
+    if (sum == 0) {
+        res.push_back(r);
+        return;
+    }
+ 
+    // Recur for all remaining elements that
+    // have value smaller than sum.
+    while (i < ar.size() && sum - ar[i] >= 0) {
+ 
+        // Till every element in the array starting
+        // from i which can contribute to the sum
+        r.push_back(ar[i]); // add them to list
+ 
+        // recursive call for next numbers
+        findNumbers(ar, sum - ar[i], res, r, i);
+        i++;
+ 
+        // Remove number from list (backtracking)
+        r.pop_back();
+    }
+}
+ 
+// Returns all combinations
+// of ar[] that have given
+// sum.
+vector<vector<int> > combinationSum(vector<int>& ar,
+                                    int sum)
+{
+    // sort input array
+    sort(ar.begin(), ar.end());
+ 
+    // remove duplicates
+    ar.erase(unique(ar.begin(), ar.end()), ar.end());
+ 
+    vector<int> r;
+    vector<vector<int> > res;
+    findNumbers(ar, sum, res, r, 0);
+ 
+    return res;
+}
+ 
+// Driver code
+int main()
+{
+    vector<int> ar;
+    ar.push_back(2);
+    ar.push_back(4);
+    ar.push_back(6);
+    ar.push_back(8);
+    int n = ar.size();
+ 
+    int sum = 8; // set value of sum
+    vector<vector<int> > res = combinationSum(ar, sum);
+ 
+    // If result is empty, then
+    if (res.size() == 0) {
+        cout << "Empty";
+        return 0;
+    }
+ 
+    // Print all combinations stored in res.
+    for (int i = 0; i < res.size(); i++) {
+        if (res[i].size() > 0) {
+            cout << " ( ";
+            for (int j = 0; j < res[i].size(); j++)
+                cout << res[i][j] << " ";
+            cout << ")";
+        }
+    }
+  return 0;
+}
+
+
+
+
+Flood Fill -
+bool isValid(int screen[][8], int m, int n, int x, int y, int prevC, int newC)
+{
+    if(x < 0 || x >= m || y < 0 || y >= n || screen[x][y] != prevC
+       || screen[x][y]== newC)
+        return false;
+    return true;
+}
+ 
+ 
+// FloodFill function
+void floodFill(int screen[][8], int m, int n, int x, int y, int prevC, int newC)
+{
+    vector<pair<int,int>> queue;
+ 
+    // Append the position of starting
+    // pixel of the component
+    pair<int,int> p(x,y);
+    queue.push_back(p);
+ 
+    // Color the pixel with the new color
+    screen[x][y] = newC;
+ 
+    // While the queue is not empty i.e. the
+    // whole component having prevC color
+    // is not colored with newC color
+    while(queue.size() > 0)
+    {
+        // Dequeue the front node
+        pair<int,int> currPixel = queue[queue.size() - 1];
+        queue.pop_back();
+ 
+        int posX = currPixel.first;
+        int posY = currPixel.second;
+ 
+        // Check if the adjacent
+        // pixels are valid
+        if(isValid(screen, m, n, posX + 1, posY, prevC, newC))
+        {
+            // Color with newC
+            // if valid and enqueue
+            screen[posX + 1][posY] = newC;
+            p.first = posX + 1;
+            p.second = posY;
+            queue.push_back(p);
+        }
+ 
+        if(isValid(screen, m, n, posX-1, posY, prevC, newC))
+        {
+            screen[posX-1][posY]= newC;
+            p.first = posX-1;
+            p.second = posY;
+            queue.push_back(p);
+        }
+ 
+        if(isValid(screen, m, n, posX, posY + 1, prevC, newC))
+        {
+            screen[posX][posY + 1]= newC;
+            p.first = posX;
+            p.second = posY + 1;
+            queue.push_back(p);
+        }
+ 
+        if(isValid(screen, m, n, posX, posY-1, prevC, newC))
+        {
+            screen[posX][posY-1]= newC;
+            p.first = posX;
+            p.second = posY-1;
+            queue.push_back(p);
+        }
+    }
+}
