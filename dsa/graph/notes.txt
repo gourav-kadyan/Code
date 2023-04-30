@@ -48,6 +48,8 @@ acyclic graph -- jiss graph mei tumhe cycle na mille
     
 
     BFS - breath first search 
+
+    DFS - depth first search
     
 
 
