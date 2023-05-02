@@ -40,7 +40,6 @@ bool find_cycle_in_undirected_graph(vector<vector<int>> &edges,int n, int m){
         int u = edges[i][0];
         int v = edges[i][1];
         adj[u].push_back(v);
-        adj[v].push_back(u);
     }
 
     //bfs 
