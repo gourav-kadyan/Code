@@ -50,6 +50,11 @@ acyclic graph -- jiss graph mei tumhe cycle na mille
     BFS - breath first search 
 
     DFS - depth first search
+
+
+DAG(Directed Acyclic Graph) -- means jis directed graph mei cycle na ho present
+
+Topological Sort -- linear ordering krta hai verteces ki like u -> v ha to u hamesha phle aayga v se
     
 
 
