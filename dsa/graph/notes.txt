@@ -49,7 +49,7 @@ acyclic graph -- jiss graph mei tumhe cycle na mille
 
     BFS - breath first search 
 
-    DFS - depth first search
+    DFS - depth first search 0-----
 
 
 DAG(Directed Acyclic Graph) -- means jis directed graph mei cycle na ho present
