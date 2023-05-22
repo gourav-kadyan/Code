@@ -1,74 +1,102 @@
-//if node is visited and node is not a parent then it is cycle is present
+//cycle detection in directed graph using dfs 
+//we made a two visited this time first is visited and second is dfs visited so here is code
 
-#include<iostream>
-#include<list>
-#include<unordered_map>
-#include<vector>
-#include<queue>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-bool dfs(int node,unordered_map<int,bool> &visited,unordered_map<int,bool> &dfsVisited,unordered_map<int,list<int>> &adj)
+
+bool dfs(int node, unordered_map<int, list<int> > &adj, unordered_map<int, bool> &visited,
+        unordered_map<int, bool> &dfsVisited)
 {
-	visited[node] = true;
-	dfsVisited[node] = true;
-	for(auto neighbour:adj[node]){
-		if(!visited[neighbour]){
-			bool cycle = dfs(neighbour,visited,dfsVisited,adj);
-			if(cycle == true){
-				return true;
-			}
-		}
-		else if(dfsVisited[neighbour] == true){
-			return true;
-		}
-	}
-	dfsVisited[node] = false;
-	return false;
+
+    visited[node] = true;
+    dfsVisited[node] = true;
+    for(auto padosi:adj[node]){
+        if(!visited[padosi]){
+            bool ans = dfs(padosi,adj,visited,dfsVisited);
+            if(ans == true)
+                return true;
+        }
+        else if(dfsVisited[padosi])
+            return true;
+    }
+
+    dfsVisited[node] = false;
+    return false;
 }
 
-
-bool find_cycle_in_undirected_graph(vector<vector<int>> &edges,int n, int m){
-    //firstly make adjancy list
-    unordered_map<int,list<int>> adj;
+bool checkCycle(vector<vector<int>> &edges,int m,int n){
+    //firstly make an adjancy list
+    unordered_map<int, list<int> > adj;
     for(int i=0;i<m;i++){
         int u = edges[i][0];
         int v = edges[i][1];
         adj[u].push_back(v);
     }
 
-    //bfs 
-    unordered_map<int,bool> dfsVisited;
-    unordered_map<int,bool> visited;
+    unordered_map<int, bool> visited;
+    unordered_map<int, bool> dfsVisited;
+
+    //dfs
     for(int i=0;i<n;i++){
         if(!visited[i]){
-            bool ans = dfs(i,visited,dfsVisited,adj);
-            if(ans == true){
+            bool ans = dfs(i,adj,visited,dfsVisited);
+            if(ans == true)
                 return true;
-            }
         }
     }
-    return false;
 
+    return false;
 }
 
+
 int main(){
-    int m;
-    cin >> m;
-    int n;
-    cin >> n;
+    int m,n;
+    cin >> m >> n;
     vector<vector<int>> edges;
     for(int i=0;i<m;i++){
-        int u;
-        int v;
-        cin >> u >> v;
+        int u,v;
+        cin>> u >> v;
         vector<int> lol;
         lol.push_back(u);
         lol.push_back(v);
         edges.push_back(lol);
     }
-    
-    bool ans = find_cycle_in_undirected_graph(edges,n,m);
-    cout << ans << endl;
-    return 0;
+
+    bool ans = checkCycle(edges,m,n);
+    if(ans == true){
+        cout << "Cycle is present " << endl;
+    }
+    else{
+        cout << "Cycle is not present " << endl;
+    }
 }
+
+
+/*
+
+5
+4
+1 2
+2 3
+3 4
+4 5
+false
+
+2
+1
+1 2
+false
+
+1
+5
+6
+1 2
+4 1
+2 4
+3 4
+5 2
+1 3
+true
+
+*/
